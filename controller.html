@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Music Controller</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap theme -->
+  <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+<div class="container theme-showcase" role="main">
+
+    <div >
+        <h1>Music Controller</h1>
+        <p class="lead">Send musical notes to a MQTT (does not work on Edge)</p>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Queue Connection</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>ClientID: <span data-bind="text: clientID"></span></p>
+                        <p>Status: <span data-bind="text: status.status"></span></p>
+                        <p>Server: <span data-bind="text: server"></span>:<span data-bind="text: port"></span></p>
+                        <button class="btn btn-success" type="button" data-bind="click: connect">Connect</button>
+                        <button class="btn btn-warning" type="button" data-bind="click: disconnect">Disconnect</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Music Keyboard</h3>
+                    </div>
+                    <div class="panel-body">
+                        <button class="btn btn-success" type="button" data-bind="click:play.bind($data,'1')">1</button>
+                        <button class="btn btn-success" type="button" data-bind="click:play.bind($data,'2')">2</button>
+                        <button class="btn btn-success" type="button" data-bind="click:play.bind($data,'3')">3</button>
+                        <button class="btn btn-success" type="button" data-bind="click:play.bind($data,'4')">4</button>
+                        <button class="btn btn-success" type="button" data-bind="click:play.bind($data,'5')">5</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Received messages</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div data-bind="foreach: log">
+                            <p data-bind="text: $data"> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div><!-- /.container -->
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Knockout for data binding -->
+<script src="js/knockout-3.4.0rc.js"></script>
+<!--MQTT Client - https://eclipse.org/paho/clients/js/ -->
+<script src="js/mqttws31.js"></script>
+<!-- My Model -->
+<script src="js/controllermodel.js"></script>
+</body>
+</html>
