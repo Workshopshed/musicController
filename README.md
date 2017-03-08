@@ -3,7 +3,7 @@
 ## Overview
 
 
-This demo project is remote control the board
+This demo project remote controls some servos from a web page
 
 ## Client Components
 
