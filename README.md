@@ -5,14 +5,16 @@
 
 This demo project is remote control the board
 
-## Components
+## Client Components
 
 * Bootstrap - For styling
-
 * Knockout - To bind the data to the controls on the page
-
 * Socket.IO - To communicate with the sockets
 * Paho MQ Client - To communicate with the MQ
+
+## Server Components
+* Mosca - An MQTT broker
+* MQTT - The MQTT client for node
 
 ## Install
 Install Mosca
@@ -27,10 +29,10 @@ Run Mosca with
  mosca -v --http-port 1884 --only-http
 
 Run webserver with
-./server.js
+./webServer.js
 
 Run musicController with
-./MusicListener.js
+./musicListener.js
 
 Navigate to web page (don't use Edge)
 http://beaglebone.lan:9090/controller.html
