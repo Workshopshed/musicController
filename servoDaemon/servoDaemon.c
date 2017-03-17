@@ -214,8 +214,8 @@ bool processCommand(int channel, char *buffer) {
             rc_set_led(GREEN, toggle);
             toggle = !toggle;
 
-            // sleep roughly enough to maintain frequency_hz
-
+            // sleep a bit to maintain frequency_hz
+            rc_usleep(1000);
         }
     }
     return true;
