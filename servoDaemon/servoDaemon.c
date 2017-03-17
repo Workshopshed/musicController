@@ -138,8 +138,6 @@ void rollbackPipes(int channel) {
 }
 
 void *servoListener(void *i) {
-    printf("Running in thread\n");
-
     int channel = *((int *) i);
     free(i);
 
