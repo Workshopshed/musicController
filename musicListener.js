@@ -31,15 +31,15 @@ client.on('message', function (topic, message) {
     }
     if (message == 'PLAY2') {
 	b.digitalWrite("USR1", 1);
-	setTimeout(function() { b.digitalWrite("USR0", 0); }, 1000);	
+	setTimeout(function() { b.digitalWrite("USR1", 0); }, 1000);	
     }
     if (message == 'PLAY3') {
 	b.digitalWrite("USR2", 1);
-	setTimeout(function() { b.digitalWrite("USR0", 0); }, 1000);	
+	setTimeout(function() { b.digitalWrite("USR2", 0); }, 1000);	
     }
     if (message == 'PLAY4') {
 	b.digitalWrite("USR3", 1);
-	setTimeout(function() { b.digitalWrite("USR0", 0); }, 1000);	
+	setTimeout(function() { b.digitalWrite("USR3", 0); }, 1000);	
     }
     console.log(message.toString())
 })
