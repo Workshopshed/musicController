@@ -3,10 +3,10 @@
 Initialise the RC code
 
 For each servo create a folder
-/dev/servo/servo1/
+/var/servoDaemon/servo/servo1/
 And some fifo pipes
-/dev/servo/power
-/dev/servo/servo0/position
+/var/servoDaemon/power - to be implemented
+/var/servoDaemon/servo0/position
         In response to commands on these pipes call the APIs
         If the term flag is raised then exit the thread
 
@@ -27,7 +27,7 @@ And some fifo pipes
 
 #include "servoDaemon.h"
 
-static const char servoDir[] = "/dev/servo";
+static const char servoDir[] = "/var/servoDaemon";
 pthread_t tid[9]; //Compensate for zero based indexes, tid[0] never used but we want the servo numbers to match the silk screen
 int const no_servos = 8;
 volatile sig_atomic_t done = 0;
@@ -43,7 +43,7 @@ void term(int signum) {
 int main() {
 
     printf("servoDaemon\n");
-    printf("listens on named pipes /dev/servo/servo1 etc\n");
+    printf("listens on named pipes %s/servo1 etc\n", servoDir);
 
     umask(0); //Set the process mask so that pipe permissions get created correctly
 
