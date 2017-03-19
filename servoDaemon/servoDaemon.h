@@ -10,7 +10,9 @@
 void createServoDir();
 void createServoPipes(int channel);
 void* servoListener(void *i);
-bool processCommand(int channel, char *buffer);
+void* servoRunner(void *i);
+void processCommand(int channel, char *buffer);
 void rollbackPipes(int channel);
+int openPipe(int channel);
 
 #endif //SERVODAEMON_SERVODAEMON_H
