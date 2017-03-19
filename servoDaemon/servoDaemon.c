@@ -29,7 +29,7 @@ And some fifo pipes
 
 static const char servoDir[] = "/var/servoDaemon";
 
-int const no_servos = 8;
+#define no_servos 8
 int const frequency_hz = 50; // default 50hz frequency to send pulses
 // normal range is from 900 to 2100 for 120 degree servos
 int const servo_range = 1200;
@@ -38,21 +38,22 @@ int const servo_mid = 1500;
 // Servo pulse widths
 //These pulses normally range from 900us to 2100us which usually corresponds to +- 60 degrees of rotation from the neutral position.
 //1500us usually corresponds to the center position.
-int servo_pulse_width_us[no_servos+1];
 
-pthread_t tid[no_servos+1];
+pthread_t servoThread;
 pthread_mutex_t lock;
 volatile sig_atomic_t done = 0;
 
 struct listener_struct {
-    int channel;
+    pthread_t tid;
     int pipeHandle;
+    int servo_pulse_width_us;
 };
 
-listener_struct listener_data[no_servos+1];
+struct listener_struct listener_data[no_servos + 1];
 
 //Max message for pipes
 #define BUF_SIZE 1024
+
 
 void term(int signum) {
     printf("Signal!");
@@ -81,27 +82,35 @@ int main() {
     for (i = 1; i <= no_servos; i++) {
 
         createServoPipes(i);
-        listener_data[i].pipeHandle = openPipe(i);
-        listener_data[i].channel = i;
+        listener_data[i].pipeHandle = openPipe(i); 
 
-        err = pthread_create(&(tid[i]), NULL, servoListener, (void *) &listener_data[i]);
+	// http://stackoverflow.com/questions/19232957/pthread-create-passing-an-integer-as-the-last-argument
+        int *arg = malloc(sizeof(*arg));
+        if (arg == NULL) {
+            fprintf(stderr, "Couldn't allocate memory for thread arg.\n");
+            exit(EXIT_FAILURE);
+        }
+        *arg = i;
+
+        err = pthread_create(&(listener_data[i].tid), NULL, servoListener, arg);
         if (err != 0)
             printf("Can't create listener thread :[%s]\n", strerror(err));
     }
 
-    err = pthread_create(&(tid[i]), NULL, servoRunner, NULL);
+    err = pthread_create(&(servoThread), NULL, servoRunner, NULL);
     if (err != 0)
         printf("Can't create runner thread :[%s]\n", strerror(err));
 
-    //Wait till done
-    for (i = 0; i <= no_servos; i++) {
-        pthread_join(tid[i], NULL);
+    //Wait till done, pthread_join blocks the signals
+    while (!done) {
+        rc_usleep(1000);
     }
+    //Should I be doing a pthread_join here?
 
     //Cleanup
     for (i = 1; i <= no_servos; i++) {
-        rollbackPipes(i);
         close(listener_data[i].pipeHandle);
+        rollbackPipes(i);
     }
 
     pthread_mutex_destroy(&lock);
@@ -124,8 +133,8 @@ void createServoDir() {
 }
 
 void createServoPipes(int channel) {
-    char servoChildDir[20];
-    char servoPosition[30];
+    char servoChildDir[255];
+    char servoPosition[255];
 
     sprintf(servoChildDir, "%s/servo%d", servoDir, channel);
     sprintf(servoPosition, "%s/servo%d/position", servoDir, channel);
@@ -158,23 +167,28 @@ void rollbackPipes(int channel) {
 }
 
 int openPipe(int channel) {
-    char servoPosition[30];
+    char servoPosition[255];
 
     sprintf(servoPosition, "%s/servo%d/position", servoDir, channel);
     printf("Listening on %s\n", servoPosition);
 
-    return open(servoPosition, O_RDONLY);
+    return open(servoPosition, O_RDONLY | O_NONBLOCK);  
 }
 
 void *servoListener(void *i) {
+    int channel = *((int *) i);
+    free(i);
 
     char rd_buffer[BUF_SIZE];
+    
     memset(rd_buffer, 0, sizeof(rd_buffer));  //Clear buffer
 
-    while (!done) {
-        if (read(fd, rd_buffer, sizeof(rd_buffer)) > 0) //read should exit with -1 if we get a signal
-            processCommand(channel, rd_buffer);
+    while(!done) {
+        if (read(listener_data[channel].pipeHandle, rd_buffer, sizeof(rd_buffer)) > 0)
+		processCommand(channel, rd_buffer);
     }
+    printf("Shutting down listener\n");
+    
     return;
 
 }
@@ -190,14 +204,14 @@ void processCommand(int channel, char *buffer) {
 
         pthread_mutex_lock(&lock);
 
-            servo_pulse_width_us[channel] = servo_mid + (servo_pos*(servo_range/2));
+            listener_data[channel].servo_pulse_width_us = servo_mid + (servo_pos*(servo_range/2));
 
         pthread_mutex_unlock(&lock);
     }
     return;
 }
 
-void* servoRunner(void *i) {
+void* servoRunner(void *a) {
 
     int toggle = 0;
     int pulse_width[no_servos+1]; //Local copy of pulses
@@ -210,7 +224,7 @@ void* servoRunner(void *i) {
         if (pthread_mutex_trylock(&lock) == 0)
         {
             for (i = 1; i <= no_servos; i++) {
-                pulse_width[i] = servo_pulse_width_us[i];
+                pulse_width[i] = listener_data[i].servo_pulse_width_us;
             }
             pthread_mutex_unlock (&lock);
         }
@@ -229,4 +243,6 @@ void* servoRunner(void *i) {
         // sleep roughly enough to maintain frequency_hz
         rc_usleep(1000000 / frequency_hz);
     }
+    printf("Shutting down runner\n");
+    return;
 }
