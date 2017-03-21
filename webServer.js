@@ -6,7 +6,6 @@ var port = 9090,
     http = require('http'),
     url = require('url'),
     fs = require('fs'),
-    b = require('bonescript');
 
 var server = http.createServer(servePage);
 
