@@ -2,8 +2,9 @@
 
 ## Overview
 
-
 This demo project remote controls some servos from a web page
+
+![System Diagram](SystemDiagram.png)
 
 ## Client Components
 
