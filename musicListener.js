@@ -3,7 +3,16 @@
 // Listens for messages on a queue and plays notes
 
 var mqtt = require('mqtt')
+var servo = require('./servo.js');
 var b = require('bonescript');
+
+var servos = [];
+
+console.log('Configuring Servos')
+
+for (var i; i < 8; i++) {
+    servos.push(new servo(i));
+}
 
 console.log('Configuring LEDs')
 
@@ -13,11 +22,9 @@ for(var i in leds) {
     b.pinMode(leds[i], b.OUTPUT);
 }
 
-
 console.log('Connecting to Queue')
 
 var client = mqtt.connect('ws://localhost:1884');
-
 
 client.on('connect', function () {
     client.subscribe('AGC_BBBL_Music/+/Commands')
