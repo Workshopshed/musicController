@@ -4,22 +4,15 @@
 
 var mqtt = require('mqtt')
 var servo = require('./servo.js');
-var b = require('bonescript');
 
 var servos = [];
 
 console.log('Configuring Servos')
 
-for (var i; i < 8; i++) {
+var i;
+
+for (i = 1; i <= 8; i++) {
     servos.push(new servo(i));
-}
-
-console.log('Configuring LEDs')
-
-var leds = ["USR0", "USR1", "USR2", "USR3"];
-
-for(var i in leds) {
-    b.pinMode(leds[i], b.OUTPUT);
 }
 
 console.log('Connecting to Queue')
@@ -31,27 +24,21 @@ client.on('connect', function () {
 })
 
 client.on('message', function (topic, message) {
-    // message is Buffer 
-    if (message == 'PLAY1') {
-	b.digitalWrite("USR0", 1);
-	setTimeout(function() { b.digitalWrite("USR0", 0); }, 1000);	
+    // message is Buffer
+    var cmd = message.toString();
+    if (cmd.substring(0, 4) == 'PLAY') {
+         var channel = cmd.substring(4, 5);
+	 playNote(channel);
     }
-    if (message == 'PLAY2') {
-	b.digitalWrite("USR1", 1);
-	setTimeout(function() { b.digitalWrite("USR1", 0); }, 1000);	
-    }
-    if (message == 'PLAY3') {
-	b.digitalWrite("USR2", 1);
-	setTimeout(function() { b.digitalWrite("USR2", 0); }, 1000);	
-    }
-    if (message == 'PLAY4') {
-	b.digitalWrite("USR3", 1);
-	setTimeout(function() { b.digitalWrite("USR3", 0); }, 1000);	
-    }
-    console.log(message.toString())
 })
 
-
+function playNote(channel) {
+    console.log(channel);
+    var servo = servos[channel - 1];
+    servo.moveTo(0.5,0.5,10);
+    servo.moveTo(0.5,0.0,50);
+    servo.moveTo(0.0,0.5,100);
+}
 
 process.on('SIGINT', function () {
     console.log("Shutting down SIGINT (Ctrl-C)");
