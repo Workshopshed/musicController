@@ -17,7 +17,7 @@ This demo project remote controls some servos from a web page
 * Mosca - An MQTT broker
 * MQTT - The MQTT client for node
 * queue - An async queue for node
-* servoDaemon - A named pipes interface for the BeagleBone Blue's servos
+* servoDaemon - A named pipes interface for the BeagleBone Blue's servos (uses API described at http://strawsondesign.com/#!manual-servos)
 
 ## Install
 ### Install Mosca
@@ -30,9 +30,9 @@ https://www.npmjs.com/package/mqtt#install
 https://www.npmjs.com/package/queue
 
 ### Build and install ServoDaemon
-Copy the files to the board
-build.sh 
-sudo createDaemon.sh 
+1. Copy the files to the board
+1. build.sh 
+1. sudo createDaemon.sh 
 
 ## Using
 
