@@ -1,7 +1,7 @@
 
 module servoStand() {
 
-offset = 0.25;
+offset = 0.3;
     
     difference() {
 		union() {
@@ -11,6 +11,9 @@ offset = 0.25;
 				rotate([-90,0,0])
 					fillet(8.1,18); 
 		}
+		translate([6,-2,18.4])
+			cube([6,10,2]);
+		
         translate([2.5+(offset/2),10,42])
             rotate([90,90,0])
                 cube([22.5+offset,12.2+offset,22.5+offset]);
@@ -24,12 +27,12 @@ offset = 0.25;
 					fillet(8.1,10);
 
 		//Drill holes
-		translate([9,-5,16])
+		translate([9,-5,17])
 			rotate([-90,0,0])
-				cylinder(d=2.5,h=10,$fn=100);
-		translate([9,-5,45])
+				cylinder(d=2,h=10,$fn=100);
+		translate([9,-5,44])
 			rotate([-90,0,0])
-				cylinder(d=2.5,h=10,$fn=100);
+				cylinder(d=2,h=10,$fn=100);
 
 		//Round back corners
 		translate([14,26,5])
