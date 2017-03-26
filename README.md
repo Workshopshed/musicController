@@ -16,15 +16,25 @@ This demo project remote controls some servos from a web page
 ## Server Components
 * Mosca - An MQTT broker
 * MQTT - The MQTT client for node
+* queue - An async queue for node
+* servoDaemon - A named pipes interface for the BeagleBone Blue's servos (uses API described at http://strawsondesign.com/#!manual-servos)
 
 ## Install
-Install Mosca
+### Install Mosca
 https://github.com/mcollina/mosca/wiki/Mosca-as-a-standalone-service.
 
-Install MQTT
+### Install MQTT
 https://www.npmjs.com/package/mqtt#install
 
-Copy the files to the board
+### Install Queue
+https://www.npmjs.com/package/queue
+
+### Build and install ServoDaemon
+1. Copy the files to the board
+1. build.sh 
+1. sudo createDaemon.sh 
+
+## Using
 
 Run Mosca with
  mosca -v --http-port 1884 --only-http
@@ -38,3 +48,4 @@ Run musicController with
 Navigate to web page (don't use Edge)
 http://beaglebone.lan:9090/controller.html
 
+Connect to queue then press buttons 1-8 to see servos move
