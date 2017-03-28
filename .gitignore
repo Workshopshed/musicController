@@ -1,3 +1,8 @@
 servoDaemon/.idea/*
 servoDaemon/CMakeLists.txt
 servoDaemon/cmake-build-debug/CMakeFiles/clion-log.txt
+.idea/misc.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/musicController.iml
+.idea/modules.xml
