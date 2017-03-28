@@ -16,7 +16,7 @@ for (var i; i < 8; i++) {
 
 console.log('Configuring LEDs')
 
-var leds = ["USR0", "USR1", "USR2", "USR3"];
+var leds = ["USR0"];
 
 for(var i in leds) {
     b.pinMode(leds[i], b.OUTPUT);
@@ -32,23 +32,17 @@ client.on('connect', function () {
 
 client.on('message', function (topic, message) {
     // message is Buffer 
-    if (message == 'PLAY1') {
-	b.digitalWrite("USR0", 1);
-	setTimeout(function() { b.digitalWrite("USR0", 0); }, 1000);	
+    
+    if (message.substring(0,4) == 'PLAY') {
+        var note = message.substring(4, 1); 
+        
+        //Flash light
+        b.digitalWrite(leds[0], 1);
+	    setTimeout(function() { b.digitalWrite("USR0", 0); }, 1000);	
+        
+        //Move servo
+
     }
-    if (message == 'PLAY2') {
-	b.digitalWrite("USR1", 1);
-	setTimeout(function() { b.digitalWrite("USR1", 0); }, 1000);	
-    }
-    if (message == 'PLAY3') {
-	b.digitalWrite("USR2", 1);
-	setTimeout(function() { b.digitalWrite("USR2", 0); }, 1000);	
-    }
-    if (message == 'PLAY4') {
-	b.digitalWrite("USR3", 1);
-	setTimeout(function() { b.digitalWrite("USR3", 0); }, 1000);	
-    }
-    console.log(message.toString())
 })
 
 
