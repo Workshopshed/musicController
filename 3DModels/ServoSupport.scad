@@ -1,19 +1,19 @@
 
 module servoStand() {
 
-offset = 0.25;
+offset = 0.35;
     
     difference() {
 		union() {
 			cube([18,3,50]);
-			cube([18,30,4]);
-			translate([0,7,8])
+			cube([18,30,3]);
+			translate([0,7,7])
 				rotate([-90,0,0])
 					fillet(8.1,18); 
 		}
 		//cable slot
-		translate([7,-2,40.4])
-			cube([4,10,2]);
+		//translate([7,-2,40.4])
+		//	cube([4,10,2]);
 		
 		//servo hole
         translate([2.5+(offset/2),10,42])
@@ -29,12 +29,12 @@ offset = 0.25;
 					fillet(8.1,10);
 
 		//Drill holes
-		translate([9,-5,18])
+		translate([9,-5,16.5])
 			rotate([-90,0,0])
-				cylinder(d=1,h=10,$fn=100);
-		translate([9,-5,43])
+				cylinder(d=2.5,h=10,$fn=100);
+		translate([9,-5,44.5])
 			rotate([-90,0,0])
-				cylinder(d=1,h=10,$fn=100);
+				cylinder(d=2.5,h=10,$fn=100);
 
 		//Round back corners
 		translate([14,26,5])
