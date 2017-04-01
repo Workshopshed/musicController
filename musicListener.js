@@ -42,13 +42,11 @@ function playNote(channel) {
 
 process.on('SIGINT', function () {
     console.log("Shutting down SIGINT (Ctrl-C)");
-    // some other closing procedures go here
     client.end()
     process.exit();
 })
 
 function doStuff() {
-    // code to run
     console.log("Heartbeat...");
 };
 
