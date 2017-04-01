@@ -13,5 +13,11 @@ console.log(servos[0].pipe);
 
 for (s in servos) {
     console.log(servos[s].pipe);
-    servos[s].position(0);
+    servos[s].moveTo(-0.5,-0.5,10);
+    servos[s].moveTo(-0.5,0.0,50);
+    servos[s].moveTo(0.0,-0.5,100);
+}
+
+for (s in servos) {
+    servos[s].run();
 }
