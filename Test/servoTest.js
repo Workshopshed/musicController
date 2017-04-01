@@ -13,5 +13,5 @@ console.log(servos[0].pipe);
 
 for (s in servos) {
     console.log(servos[s].pipe);
-    servos[s].position(10);
+    servos[s].position(0);
 }
