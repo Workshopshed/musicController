@@ -5,7 +5,7 @@
 var port = 9090,
     http = require('http'),
     url = require('url'),
-    fs = require('fs'),
+    fs = require('fs');
 
 var server = http.createServer(servePage);
 
