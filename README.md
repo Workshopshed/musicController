@@ -1,4 +1,4 @@
-# Controller
+# Beaglebone Blue Based Music
 
 ## Overview
 
@@ -38,7 +38,7 @@ Run musicController with
 Navigate to web page (don't use Edge)
 http://beaglebone.lan:9090/controller.html
 
-## Finished Glockenspiel ##
+## Finished Glockenspiel
 
 ![Finished Glockenspiel](FinishedGlockenspiel.jpg)
 
